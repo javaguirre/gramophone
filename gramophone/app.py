@@ -1,4 +1,6 @@
+# -*- coding: utf-8 -*-
 import os
+import json
 
 import cherrypy
 from jinja2 import Environment, FileSystemLoader
@@ -38,6 +40,25 @@ class Root(object):
             db.create_tracks(DBFILE, tracks)
         else:
             db.update_tracks(DBFILE, tracks)
+
+    @cherrypy.expose
+    @cherrypy.tools.json_out()
+    def tracks(self):
+        tracks = db.select_tracks(DBFILE)
+        track_list = []
+
+        for track in tracks:
+            track_list.append({
+                'path': track[0],
+                'title': track[1],
+                'track': track[2],
+                'duration': track[3],
+                'artist': track[4],
+                'album': track[5]
+                })
+
+
+        return track_list
 
 
 cherrypy.quickstart(Root(), '/', config=config)
