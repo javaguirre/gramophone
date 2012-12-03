@@ -35,7 +35,9 @@ class Root(object):
 
         if not os.path.isfile(DBFILE) or os.path.getsize(DBFILE == 0):
             db.init_db(DBFILE)
-        db.update_tracks(DBFILE, tracks)
+            db.create_tracks(DBFILE, tracks)
+        else:
+            db.update_tracks(DBFILE, tracks)
 
 
 cherrypy.quickstart(Root(), '/', config=config)

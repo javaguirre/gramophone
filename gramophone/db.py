@@ -16,11 +16,26 @@ def init_db(dbfile):
     conn.commit()
 
 
+def create_tracks(dbfile, tracks):
+    conn = get_db_conn(dbfile)
+    cursor = conn.cursor()
+    #cursor.execute("""INSERT INTO tracks (path, title, track, duration,
+                       #artist, album) VALUES (?,?,?,?,?,?)""", tracks)
+    for track in tracks:
+        cursor.execute("""INSERT INTO tracks (path, title, track, duration,
+                   artist, album) VALUES (?,?,?,?,?,?)""", track)
+    conn.commit()
+
+
 def update_tracks(dbfile, tracks):
     conn = get_db_conn(dbfile)
     cursor = conn.cursor()
-    cursor.executemany("""INSERT INTO tracks (path, title, track, duration,
-                       artist, album) VALUES (?,?,?,?,?,?)""", tracks)
+
+    for track in tracks:
+        query_track = cursor.execute('SELECT path FROM tracks WHERE path=?', track[0]).fetchone()
+        if not query_track:
+            cursor.execute("""INSERT INTO tracks (path, title, track, duration,
+                       artist, album) VALUES (?,?,?,?,?,?)""", track)
     conn.commit()
 
 
