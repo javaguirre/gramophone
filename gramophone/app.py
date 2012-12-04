@@ -60,5 +60,34 @@ class Root(object):
 
         return track_list
 
+    @cherrypy.expose
+    @cherrypy.tools.json_out()
+    def artists(self):
+        tracks = db.select_artists(DBFILE)
+        artist_list = []
+
+        for track in tracks:
+            if track[0]:
+                artist_list.append({
+                    'artist': track[0],
+                    })
+
+
+        return artist_list
+
+    @cherrypy.expose
+    @cherrypy.tools.json_out()
+    def albums(self):
+        tracks = db.select_albums(DBFILE)
+        album_list = []
+
+        for track in tracks:
+            if track[0]:
+                album_list.append({
+                    'album': track[0],
+                    })
+
+        return album_list
+
 
 cherrypy.quickstart(Root(), '/', config=config)

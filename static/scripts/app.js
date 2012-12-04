@@ -14,9 +14,23 @@
     });
 
     var TrackView = Backbone.View.extend({
-        tagName:  "div",
+        events: {
+            'click .add-to-playlist': 'addToPlaylist'
+        },
+        tagName:  "li",
 
         initialize: function(options) {
+            $('#track-list li').draggable({
+                appendTo: 'body',
+                helper: 'clone'
+            });
+            $('.wrapper ol').droppable({
+                drop: function(event, ui) {
+                    console.log("Drop!");
+                    $('<li>').text('hello').appendTo(this);
+                }
+            });
+
         },
 
         render: function() {
@@ -41,7 +55,17 @@
             }
 
             this.$('.track').text(text);
-            this.$('.track').attr('data-src', path);
+            this.$('.track').attr('data-src', '/music' + path);
+        },
+
+        addToPlaylist: function() {
+            var track_title = this.$('.track').text();
+            var track_path = this.$('.track').attr('data-src');
+            var trackToAdd = $('<li>');
+            var link_track = $('<a>').attr('data-src', track_path).text(track_title);
+
+            trackToAdd.append(link_track);
+            trackToAdd.appendTo($('#wrapper ol'));
         }
     });
 

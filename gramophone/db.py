@@ -45,3 +45,19 @@ def select_tracks(dbfile):
     tracks = cursor.execute('SELECT * FROM tracks LIMIT 20').fetchall()
 
     return tracks
+
+
+def select_albums(dbfile):
+    conn = get_db_conn(dbfile)
+    cursor = conn.cursor()
+    albums = cursor.execute('SELECT DISTINCT(album) FROM tracks').fetchall()
+
+    return albums
+
+
+def select_artists(dbfile):
+    conn = get_db_conn(dbfile)
+    cursor = conn.cursor()
+    artists = cursor.execute('SELECT DISTINCT(artist) FROM tracks').fetchall()
+
+    return artists

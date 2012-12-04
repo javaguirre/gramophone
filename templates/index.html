@@ -16,6 +16,7 @@
 
         <script src="scripts/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+        <script src="scripts/vendor/jquery-ui-1.9.2.custom.min.js" type="text/javascript" charset="utf-8"></script>
         <script src="scripts/underscore-min.js"></script>
         <script src="scripts/backbone-min.js"></script>
         <script src="scripts/template.js"></script>
@@ -40,12 +41,13 @@
             audio.load(first);
 
             // Load in a track on click
-            $('ol li').click(function(e) {
+            $('ol li').live('click', function(e) {
               e.preventDefault();
               $(this).addClass('playing').siblings().removeClass('playing');
               audio.load($('a', this).attr('data-src'));
               audio.play();
             });
+
             // Keyboard shortcuts
             $(document).keydown(function(e) {
               var unicode = e.charCode ? e.charCode : e.keyCode;
@@ -115,11 +117,8 @@
                 <div class="hero-unit span9">
                     <div id="wrapper">
                       <h1>Playlist</h1>
-                      <audio preload></audio>
+                      <audio></audio>
                       <ol>
-                        <li><a href="#" data-src="/Musica/01-Lufon.mp3">Lufon</a></li>
-                        <li><a href="#" data-src="http://s3.amazonaws.com/audiojs/02-juicy-r.mp3">juicy-r</a></li>
-                        <li><a href="#" data-src="http://s3.amazonaws.com/audiojs/03-its-all-about-the-crystalizabeths.mp3">it's all about the crystalizabeths</a></li>
                       </ol>
                     </div>
                     <!--<div id="shortcuts">-->
