@@ -17,6 +17,8 @@ config = {'/':
             'tools.staticdir.root': '/home/javaguirre/Proyectos/python/gramophone',
             'tools.staticdir.on': True,
             'tools.staticdir.dir': 'static',
+            'tools.encode.on': True,
+            'tools.encode.encoding': 'UTF-8',
             'music_collection': '/home/javaguirre/Musica',
             'dbfile': 'gramophone.db'
             }
