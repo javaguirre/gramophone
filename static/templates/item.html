@@ -1,2 +1,3 @@
-<a href="#" data-src="" class="track"></a><a class="add-to-playlist"><i class="icon-plus"></i></a>
-
+<a href="<%= track.path %>" data-src="/music/<%= track.path %>" class="track">
+    <%= track.title || track.path %>
+</a> <a class="add-to-playlist"><i class="icon-plus"></i></a>

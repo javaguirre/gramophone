@@ -1,5 +1,9 @@
 (function() {
     var TEMPLATE_URL = '';
+    var template_track;
+    $.get(TEMPLATE_URL + '/templates/item.html', function(data) {
+        template_track = data;
+    });
 
     var Track = Backbone.Model.extend({
     });
@@ -36,26 +40,10 @@
         render: function() {
             var self = this;
 
-            $(self.el).template(TEMPLATE_URL + '/templates/item.html', {tracks: self.model.toJSON().objects}, function() {
-                self.setText();
-            });
+            var compiled_template = _.template(template_track);
+            this.el.innerHTML = compiled_template({ track: self.model.toJSON() });
 
             return this;
-        },
-        setText: function() {
-            //FIXME Provisional
-            var text = this.model.get('title');
-            var path = this.model.get('path');
-
-            if(!text) {
-                var index = path.lastIndexOf('/');
-                var last_index = path.lastIndexOf('.');
-                path_split = path.substr(index+1, last_index);
-                text = path_split;
-            }
-
-            this.$('.track').text(text);
-            this.$('.track').attr('data-src', '/music' + path);
         },
 
         addToPlaylist: function() {
