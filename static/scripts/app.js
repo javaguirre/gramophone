@@ -58,6 +58,7 @@
     });
 
     window.TrackApp = Backbone.View.extend({
+        el: $('#trackApp'),
         events: {
         },
 
@@ -66,7 +67,6 @@
                 parentElt = $('#app');
 
             parentElt.template(TEMPLATE_URL + '/templates/app.html', {}, function() {
-                self.el = $('#trackApp');
                 self.delegateEvents();
 
                 self.tracks = new TrackList();
