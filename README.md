@@ -8,7 +8,7 @@ You will need last version of [cherrypy](https://bitbucket.org/cherrypy/cherrypy
 Install:
 --------
 
-    $ virtualenv gramophone
+    $ virtualenv venv
     $ ./gramophone/bin/activate
     $ pip install -r requirements.tx
     $ python app.py

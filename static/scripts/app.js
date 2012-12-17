@@ -23,11 +23,14 @@
             }
             var track_path = track.get('path');
             var trackToAdd = $('<li>');
-            var link_track = $('<a>').attr('data-src', '/music/' + track_path).text(track_title);
+            var linkTrack = $('<a>').attr('data-src', '/music/' + track_path).text(track_title);
+            var deleteTrack = $('<a>').addClass("delete-track").html($('<i>').addClass('icon-remove'));
 
-            trackToAdd.append(link_track);
-            trackToAdd.appendTo($('#wrapper ol'));
+            trackToAdd.append(linkTrack);
+            trackToAdd.append(deleteTrack);
+            trackToAdd.appendTo($('#playlist'));
         },
+
         setPlaylist: function(objects) {
             objects.each(function(track) {
                 utils.addToPlaylist(track);
@@ -105,7 +108,6 @@
 
         addToPlaylist: function() {
             var tracks = new TrackList({query: "album=" + encodeURIComponent(this.model.get('album'))});
-            //FIXME Provisional
             tracks.fetch({
                 success: function(data) {
                     utils.setPlaylist(data);
@@ -115,7 +117,8 @@
 
         goToTracks: function() {
             window.router.navigate('!/filter/album/' + encodeURIComponent(this.model.get('album')), true);
-        }
+        },
+
     });
 
     var ArtistView = Backbone.View.extend({
@@ -138,7 +141,6 @@
 
         addToPlaylist: function() {
             var tracks = new TrackList({query: "artist=" + encodeURIComponent(this.model.get('artist'))});
-            //FIXME Provisional
             tracks.fetch({
                 success: function(data) {
                     utils.setPlaylist(data);
@@ -162,11 +164,11 @@
                 appendTo: 'body',
                 helper: 'clone'
             });
-            $('.wrapper ol').droppable({
+            $('#playlist').droppable({
                 drop: function(event, ui) {
-                    $('<li>').text('hello').appendTo(this);
                 }
             });
+            $('#playlist').sortable();
         },
 
         render: function() {
@@ -187,7 +189,8 @@
         el: $('#app'),
         events: {
             'click #add-all-to-playlist': 'addAllToPlaylist',
-            "click #searchTask" : "search"
+            "click #searchTask" : "search",
+            'click .icon-remove': 'removeTrack'
         },
 
         initialize: function(options) {
@@ -264,6 +267,10 @@
             console.log("Search");
             var letters = $("#searchText").val();
             this.renderList(this.collection.search(letters));
+        },
+
+        removeTrack: function(e) {
+            $(e.target).parent().parent().remove();
         }
     });
 
