@@ -82,7 +82,8 @@
 
             var pattern = new RegExp(letters,"gi");
             return _(this.filter(function(data) {
-                return pattern.test(data.get("title"));
+                return pattern.test(data.get("title")) ||
+                       pattern.test(data.get('path'));
             }));
         }
     });
@@ -117,8 +118,7 @@
 
         goToTracks: function() {
             window.router.navigate('!/filter/album/' + encodeURIComponent(this.model.get('album')), true);
-        },
-
+        }
     });
 
     var ArtistView = Backbone.View.extend({
@@ -229,6 +229,19 @@
             return this;
         },
 
+        renderList : function(tracks){
+            $('#track-list').html("");
+
+            tracks.each(function(track){
+                var view = new TrackView({
+                    model: track,
+                    objects: this.objects
+                });
+                $("#track-list").append(view.render().el);
+            });
+            return this;
+        },
+
         addOne: function(object) {
             var view;
 
@@ -264,9 +277,8 @@
         },
 
         search: function(e) {
-            console.log("Search");
             var letters = $("#searchText").val();
-            this.renderList(this.collection.search(letters));
+            this.renderList(this.objects.search(letters));
         },
 
         removeTrack: function(e) {
@@ -291,9 +303,9 @@
             var view = new TrackApp({query: type + "=" + query});
         },
 
-        search: function(query) {
-            console.log("Search!");
-        },
+        /*search: function(query) {*/
+        /*console.log("Search!");*/
+        /*},*/
 
         artists: function() {
             var view = new TrackApp({view: 'artist'});
