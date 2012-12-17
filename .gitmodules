@@ -1,0 +1,3 @@
+[submodule "static/audiojs"]
+	path = static/audiojs
+	url = git@github.com:javaguirre/audiojs.git
