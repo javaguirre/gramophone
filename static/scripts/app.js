@@ -21,22 +21,43 @@
 
     var ArtistList = Backbone.Collection.extend({
         model: Artist,
-        url: '/artists'
+        url: '/artists',
+
+        comparator: function(artist) {
+            return artist.get("artist").toLowerCase();
+        }
     });
 
     var AlbumList = Backbone.Collection.extend({
         model: Album,
-        url: '/albums'
+        url: '/albums',
+
+        comparator: function(artist) {
+            return artist.get("album").toLowerCase();
+        }
     });
 
     var TrackList = Backbone.Collection.extend({
         model: Track,
-        url: '/tracks'
+        url: function() {
+            if(this.query) {
+                return '/tracks?' + this.query;
+            }
+            return '/tracks';
+        },
+
+        initialize: function(options) {
+            this.query = '';
+            if (options.query) {
+                this.query = options.query;
+            }
+        }
     });
 
     var AlbumView = Backbone.View.extend({
         events: {
-            'click .add-to-playlist': 'addToPlaylist'
+            'click .add-album-to-playlist': 'addToPlaylist',
+            'click .go-to-tracks': 'goToTracks'
         },
         tagName:  "li",
 
@@ -54,12 +75,17 @@
 
         addToPlaylist: function() {
             //TODO
+        },
+
+        goToTracks: function() {
+            window.router.navigate('!/filter/album/' + encodeURIComponent(this.model.get('album')), true);
         }
     });
 
     var ArtistView = Backbone.View.extend({
         events: {
-            'click .add-to-playlist': 'addToPlaylist'
+            'click .add-artist-to-playlist': 'addToPlaylist',
+            'click .go-to-tracks': 'goToTracks'
         },
         tagName:  "li",
 
@@ -76,6 +102,10 @@
 
         addToPlaylist: function() {
             //TODO
+        },
+
+        goToTracks: function() {
+            window.router.navigate('!/filter/artist/' + encodeURIComponent(this.model.get('artist')), true);
         }
     });
 
@@ -128,9 +158,10 @@
 
             parentElt.template(TEMPLATE_URL + '/templates/app.html', {}, function() {
                 self.delegateEvents();
+                var query = options.query || '';
 
                 if(!options.view) {
-                    self.objects = new TrackList();
+                    self.objects = new TrackList({query: query});
                 }
                 else {
                     switch(options.view) {
@@ -141,7 +172,7 @@
                             self.objects = new ArtistList();
                             break;
                         default:
-                            self.objects = new TrackList();
+                            self.objects = new TrackList({query: query});
                             break;
                     }
 
@@ -182,12 +213,17 @@
     window.MyRouter = Backbone.Router.extend({
         routes: {
             "!/": "index",
+            "!/filter/:type/:query": "filter",
             "!/artists": "artists",
             "!/albums": "albums"
         },
 
         index: function() {
             var view = new TrackApp({});
+        },
+
+        filter: function(type, query) {
+            var view = new TrackApp({query: type + "=" + query});
         },
 
         artists: function() {

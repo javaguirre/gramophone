@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import os
-import json
 
 import cherrypy
 from jinja2 import Environment, FileSystemLoader
@@ -45,8 +44,8 @@ class Root(object):
 
     @cherrypy.expose
     @cherrypy.tools.json_out()
-    def tracks(self):
-        tracks = db.select_tracks(DBFILE)
+    def tracks(self, album=None, artist=None):
+        tracks = db.select_tracks(DBFILE, album, artist)
         track_list = []
 
         for track in tracks:

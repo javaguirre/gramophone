@@ -1,4 +1,5 @@
 # FIXME Provisional proof of concept
+# this will be a class
 import sqlite3
 
 
@@ -39,10 +40,19 @@ def update_tracks(dbfile, tracks):
     conn.commit()
 
 
-def select_tracks(dbfile):
+def select_tracks(dbfile, album=None, artist=None):
     conn = get_db_conn(dbfile)
     cursor = conn.cursor()
-    tracks = cursor.execute('SELECT * FROM tracks LIMIT 20').fetchall()
+    query = 'SELECT * FROM tracks'
+
+    if album:
+        query = ' '.join([query, "WHERE album='%s'" % album])
+    elif artist:
+        query = ' '.join([query, "WHERE artist='%s'" % artist])
+    if not album and not artist:
+        query = ' '.join([query, 'LIMIT 20'])
+
+    tracks = cursor.execute(query).fetchall()
 
     return tracks
 
