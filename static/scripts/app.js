@@ -186,17 +186,17 @@
     });
 
     window.TrackApp = Backbone.View.extend({
-        el: $('#trackApp'),
+        el: $('#app'),
         events: {
-            'click #add-all-to-playlist': 'addAllToPlaylist'
+            'click #add-all-to-playlist': 'addAllToPlaylist',
+            "click #searchTask" : "search"
         },
 
         initialize: function(options) {
             var self = this,
-                parentElt = $('#app');
+                parentElt = $('#track-list-app');
 
             parentElt.template(TEMPLATE_URL + '/templates/app.html', {}, function() {
-                self.delegateEvents();
                 var query = options.query || '';
 
                 if(!options.view) {
@@ -214,7 +214,6 @@
                             self.objects = new TrackList({query: query});
                             break;
                     }
-
                 }
 
                 self.objects.bind('add',   self.addOne, self);
@@ -249,8 +248,24 @@
         },
 
         addAllToPlaylist: function() {
-            console.log("add all");
-            console.dir(this);
+            this.objects.each(function(track) {
+                var track_title = track.get('title');
+                if(!track_title) {
+                    track_title = track.get('path');
+                }
+                var track_path = track.get('path');
+                var trackToAdd = $('<li>');
+                var link_track = $('<a>').attr('data-src', '/music/' + track_path).text(track_title);
+
+                trackToAdd.append(link_track);
+                trackToAdd.appendTo($('#wrapper ol'));
+            });
+        },
+
+        search: function(e) {
+            console.log("Search");
+            var letters = $("#searchText").val();
+            this.renderList(this.collection.search(letters));
         }
     });
 

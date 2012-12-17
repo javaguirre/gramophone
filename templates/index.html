@@ -69,7 +69,7 @@
           });
         </script>
     </head>
-    <body>
+    <body id="app">
         <!--[if lt IE 7]>
             <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
         <![endif]-->
@@ -97,8 +97,7 @@
             <div class="row-fluid">
                 <div id="wrapper">
                   <audio></audio>
-                  <ol>
-                      <li class="playing"><a data-src="/music/03-Traffic Man.mp3">Traffic Man</a></li>
+                  <ol id="playlist">
                   </ol>
                 </div>
                 <div class="span9">
@@ -107,13 +106,13 @@
                         <li><a href="#!/albums">Albums</a></li>
                         <li><a href="#!/artists">Artists</a></li>
                     </ul>
-                    <form class="navbar-form form-search" action="">
-                        <input type="text" class="input-medium search-query">
-                        <button type="submit" class="btn">Search</button>
+                    <form class="navbar-form form-search">
+                        <input type="text" class="input-medium search-query" id="searchText">
+                        <button type="button" class="btn" id="searchTask">Search</button>
                     </form>
                 </div>
                 <div class="hero-unit span9">
-                    <ul class="nav nav-list" id="app">
+                    <ul class="nav nav-list" id="track-list-app">
                 </div>
             </div>
 
