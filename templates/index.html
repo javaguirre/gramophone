@@ -95,33 +95,25 @@
 
         <div class="container-fluid">
             <div class="row-fluid">
-                <div class="span3">
-                    <div class="well sidebar-nav">
-                        <form class="navbar-form form-search">
-                            <input type="text" class="input-medium search-query">
-                            <button type="submit" class="btn">Search</button>
-                        </form>
-                        <ul class="nav nav-list" id="app">
-                          <li class="nav-header">Sidebar</li>
-                          <li class="active"><a href="#">Link</a></li>
-                          <li><a href="#">Link</a></li>
-                          <li><a href="#">Link</a></li>
-                          <li><a href="#">Link</a></li>
-                          <li class="nav-header">Sidebar</li>
-                          <li><a href="#">Link</a></li>
-                          <li><a href="#">Link</a></li>
-                          <li><a href="#">Link</a></li>
-                        </ul>
-                      </div><!--/.well -->
-                </div><!--/span-->
+                <div id="wrapper">
+                  <audio></audio>
+                  <ol>
+                      <li class="playing"><a data-src="/music/03-Traffic Man.mp3">Traffic Man</a></li>
+                  </ol>
+                </div>
+                <div class="span9">
+                    <ul>
+                        <li><a href="#!/">Tracks</a></li>
+                        <li><a href="#!/albums">Albums</a></li>
+                        <li><a href="#!/artists">Artists</a></li>
+                    </ul>
+                    <form class="navbar-form form-search" action="">
+                        <input type="text" class="input-medium search-query">
+                        <button type="submit" class="btn">Search</button>
+                    </form>
+                </div>
                 <div class="hero-unit span9">
-                    <div id="wrapper">
-                      <h1>Playlist</h1>
-                      <audio></audio>
-                      <ol>
-                          <li class="playing"><a data-src="/music/03-Traffic Man.mp3">Traffic Man</a></li>
-                      </ol>
-                    </div>
+                    <ul class="nav nav-list" id="app">
                     <!--<div id="shortcuts">-->
                         <!--<div>-->
                             <!--<h1>Keyboard shortcuts:</h1>-->
@@ -134,6 +126,7 @@
             </div>
 
             <hr />
+
             <footer>
                 <p>Gramophone</p>
             </footer>

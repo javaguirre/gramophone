@@ -1,19 +1,81 @@
 (function() {
     var TEMPLATE_URL = '';
     var template_track;
+    var template_album;
+    var template_artist;
+
+    //FIXME Provisional
     $.get(TEMPLATE_URL + '/templates/item.html', function(data) {
         template_track = data;
     });
+    $.get(TEMPLATE_URL + '/templates/album.html', function(data) {
+        template_album = data;
+    });
+    $.get(TEMPLATE_URL + '/templates/artist.html', function(data) {
+        template_artist = data;
+    });
 
-    var Track = Backbone.Model.extend({
+    var Artist = Backbone.Model.extend({});
+    var Album = Backbone.Model.extend({});
+    var Track = Backbone.Model.extend({});
+
+    var ArtistList = Backbone.Collection.extend({
+        model: Artist,
+        url: '/artists'
+    });
+
+    var AlbumList = Backbone.Collection.extend({
+        model: Album,
+        url: '/albums'
     });
 
     var TrackList = Backbone.Collection.extend({
-
         model: Track,
-        url: function() {
-            var my_url = '/tracks';
-            return my_url;
+        url: '/tracks'
+    });
+
+    var AlbumView = Backbone.View.extend({
+        events: {
+            'click .add-to-playlist': 'addToPlaylist'
+        },
+        tagName:  "li",
+
+        initialize: function(options) {
+        },
+
+        render: function() {
+            var self = this;
+
+            var compiled_template = _.template(template_album);
+            this.el.innerHTML = compiled_template({ album: self.model.toJSON() });
+
+            return this;
+        },
+
+        addToPlaylist: function() {
+            //TODO
+        }
+    });
+
+    var ArtistView = Backbone.View.extend({
+        events: {
+            'click .add-to-playlist': 'addToPlaylist'
+        },
+        tagName:  "li",
+
+        initialize: function(options) {},
+
+        render: function() {
+            var self = this;
+
+            var compiled_template = _.template(template_artist);
+            this.el.innerHTML = compiled_template({ artist: self.model.toJSON() });
+
+            return this;
+        },
+
+        addToPlaylist: function() {
+            //TODO
         }
     });
 
@@ -30,11 +92,9 @@
             });
             $('.wrapper ol').droppable({
                 drop: function(event, ui) {
-                    console.log("Drop!");
                     $('<li>').text('hello').appendTo(this);
                 }
             });
-
         },
 
         render: function() {
@@ -69,12 +129,28 @@
             parentElt.template(TEMPLATE_URL + '/templates/app.html', {}, function() {
                 self.delegateEvents();
 
-                self.tracks = new TrackList();
-                self.tracks.bind('add',   self.addOne, self);
-                self.tracks.bind('reset', self.addAll, self);
-                self.tracks.bind('all',   self.render, self);
+                if(!options.view) {
+                    self.objects = new TrackList();
+                }
+                else {
+                    switch(options.view) {
+                        case('album'):
+                            self.objects = new AlbumList();
+                            break;
+                        case('artist'):
+                            self.objects = new ArtistList();
+                            break;
+                        default:
+                            self.objects = new TrackList();
+                            break;
+                    }
 
-                self.tracks.fetch();
+                }
+
+                self.objects.bind('add',   self.addOne, self);
+                self.objects.bind('reset', self.addAll, self);
+                self.objects.bind('all',   self.render, self);
+                self.objects.fetch();
             });
         },
 
@@ -83,23 +159,43 @@
             return this;
         },
 
-        addOne: function(track) {
-            var view = new TrackView({model: track});
+        addOne: function(object) {
+            var view;
+
+            if(object instanceof Track) {
+                view = new TrackView({model: object});
+            }
+            else if(object instanceof Artist) {
+                view = new ArtistView({model: object});
+            }
+            else if(object instanceof Album) {
+                view = new AlbumView({model: object});
+            }
             this.$("#track-list").append(view.render().el);
         },
 
         addAll: function() {
-            this.tracks.each(this.addOne);
+            this.objects.each(this.addOne);
         }
     });
 
     window.MyRouter = Backbone.Router.extend({
         routes: {
-            "!/": "index"
+            "!/": "index",
+            "!/artists": "artists",
+            "!/albums": "albums"
         },
 
         index: function() {
             var view = new TrackApp({});
+        },
+
+        artists: function() {
+            var view = new TrackApp({view: 'artist'});
+        },
+
+        albums: function() {
+            var view = new TrackApp({view: 'album'});
         },
 
         extractParams: function(params) {
