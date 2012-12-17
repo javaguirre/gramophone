@@ -51,6 +51,16 @@
             if (options.query) {
                 this.query = options.query;
             }
+        },
+
+        search: function(letters){
+            if(letters === "")
+                return this;
+
+            var pattern = new RegExp(letters,"gi");
+            return _(this.filter(function(data) {
+                return pattern.test(data.get("title"));
+            }));
         }
     });
 
@@ -74,7 +84,21 @@
         },
 
         addToPlaylist: function() {
-            //TODO
+            var tracks = new TrackList({query: "album=" + encodeURIComponent(this.model.get('album'))});
+            //FIXME Provisional
+            tracks.fetch({
+                success: function(data) {
+                    data.each(function(track) {
+                        var track_title = track.get('title');
+                        var track_path = track.get('path');
+                        var trackToAdd = $('<li>');
+                        var link_track = $('<a>').attr('data-src', '/music/' + track_path).text(track_title);
+
+                        trackToAdd.append(link_track);
+                        trackToAdd.appendTo($('#wrapper ol'));
+                    });
+                }
+            });
         },
 
         goToTracks: function() {
@@ -101,7 +125,21 @@
         },
 
         addToPlaylist: function() {
-            //TODO
+            var tracks = new TrackList({query: "artist=" + encodeURIComponent(this.model.get('artist'))});
+            //FIXME Provisional
+            tracks.fetch({
+                success: function(data) {
+                    data.each(function(track) {
+                        var track_title = track.get('title');
+                        var track_path = track.get('path');
+                        var trackToAdd = $('<li>');
+                        var link_track = $('<a>').attr('data-src', '/music/' + track_path).text(track_title);
+
+                        trackToAdd.append(link_track);
+                        trackToAdd.appendTo($('#wrapper ol'));
+                    });
+                }
+            });
         },
 
         goToTracks: function() {
@@ -140,7 +178,7 @@
             var track_title = this.$('.track').text();
             var track_path = this.$('.track').attr('data-src');
             var trackToAdd = $('<li>');
-            var link_track = $('<a>').attr('data-src', track_path).text(track_title);
+            var link_track = $('<a>').attr('data-src', '/music/' + track_path).text(track_title);
 
             trackToAdd.append(link_track);
             trackToAdd.appendTo($('#wrapper ol'));
@@ -150,6 +188,7 @@
     window.TrackApp = Backbone.View.extend({
         el: $('#trackApp'),
         events: {
+            'click #add-all-to-playlist': 'addAllToPlaylist'
         },
 
         initialize: function(options) {
@@ -207,6 +246,11 @@
 
         addAll: function() {
             this.objects.each(this.addOne);
+        },
+
+        addAllToPlaylist: function() {
+            console.log("add all");
+            console.dir(this);
         }
     });
 
@@ -214,6 +258,7 @@
         routes: {
             "!/": "index",
             "!/filter/:type/:query": "filter",
+            "!/search/:query": "search",
             "!/artists": "artists",
             "!/albums": "albums"
         },
@@ -226,29 +271,16 @@
             var view = new TrackApp({query: type + "=" + query});
         },
 
+        search: function(query) {
+            console.log("Search!");
+        },
+
         artists: function() {
             var view = new TrackApp({view: 'artist'});
         },
 
         albums: function() {
             var view = new TrackApp({view: 'album'});
-        },
-
-        extractParams: function(params) {
-            var params_object = {};
-
-            if(!params){
-                return params_object;
-            }
-
-            $.each(params.split('&'), function(index, value){
-                if(value){
-                    var param = value.split('=');
-                    params_object[param[0]] = param[1];
-                }
-            });
-
-            return params_object;
         }
     });
 }());
