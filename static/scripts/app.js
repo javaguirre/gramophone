@@ -15,6 +15,26 @@
         template_artist = data;
     });
 
+    var utils = {
+        addToPlaylist: function(track) {
+            var track_title = track.get('title');
+            if(!track_title) {
+                track_title = track.get('path');
+            }
+            var track_path = track.get('path');
+            var trackToAdd = $('<li>');
+            var link_track = $('<a>').attr('data-src', '/music/' + track_path).text(track_title);
+
+            trackToAdd.append(link_track);
+            trackToAdd.appendTo($('#wrapper ol'));
+        },
+        setPlaylist: function(objects) {
+            objects.each(function(track) {
+                utils.addToPlaylist(track);
+            });
+        }
+    };
+
     var Artist = Backbone.Model.extend({});
     var Album = Backbone.Model.extend({});
     var Track = Backbone.Model.extend({});
@@ -88,15 +108,7 @@
             //FIXME Provisional
             tracks.fetch({
                 success: function(data) {
-                    data.each(function(track) {
-                        var track_title = track.get('title');
-                        var track_path = track.get('path');
-                        var trackToAdd = $('<li>');
-                        var link_track = $('<a>').attr('data-src', '/music/' + track_path).text(track_title);
-
-                        trackToAdd.append(link_track);
-                        trackToAdd.appendTo($('#wrapper ol'));
-                    });
+                    utils.setPlaylist(data);
                 }
             });
         },
@@ -129,15 +141,7 @@
             //FIXME Provisional
             tracks.fetch({
                 success: function(data) {
-                    data.each(function(track) {
-                        var track_title = track.get('title');
-                        var track_path = track.get('path');
-                        var trackToAdd = $('<li>');
-                        var link_track = $('<a>').attr('data-src', '/music/' + track_path).text(track_title);
-
-                        trackToAdd.append(link_track);
-                        trackToAdd.appendTo($('#wrapper ol'));
-                    });
+                    utils.setPlaylist(data);
                 }
             });
         },
@@ -175,13 +179,7 @@
         },
 
         addToPlaylist: function() {
-            var track_title = this.$('.track').text();
-            var track_path = this.$('.track').attr('data-src');
-            var trackToAdd = $('<li>');
-            var link_track = $('<a>').attr('data-src', '/music/' + track_path).text(track_title);
-
-            trackToAdd.append(link_track);
-            trackToAdd.appendTo($('#wrapper ol'));
+            utils.addToPlaylist(this.model);
         }
     });
 
