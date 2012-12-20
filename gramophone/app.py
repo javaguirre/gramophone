@@ -18,7 +18,7 @@ config = {'/':
             'tools.staticdir.dir': 'static',
             'tools.encode.on': True,
             'tools.encode.encoding': 'UTF-8',
-            'music_collection': '/home/javaguirre/Musica',
+            'music_collection': MUSIC_PATH,
             'dbfile': 'gramophone.db'
             }
          }
