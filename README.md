@@ -9,6 +9,8 @@ Install:
 --------
 
     $ virtualenv venv --distribute
-    $ ./gramophone/bin/activate
-    $ pip install -r requirements.tx
-    $ python app.py
+    $ . venv/bin/activate
+    $ pip install -r requirements.txt
+    $ python gramophone/app.py
+
+Visit http://localhost:8080/update_db to initialize the database.
