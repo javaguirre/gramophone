@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, jsonify, request
 
 import db
 import explore
@@ -40,7 +40,9 @@ def update_db():
 
 
 @app.route('/tracks/')
-def tracks(album=None, artist=None):
+def tracks():
+    album = request.args.get('album', None)
+    artist = request.args.get('artist', None)
     tracks = db.select_tracks(album, artist)
     track_list = []
 

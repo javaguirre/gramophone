@@ -180,17 +180,7 @@ var Gramophone = {
         tagName:  "li",
         template: _.template($('#template-track').html()),
 
-        initialize: function(options) {
-            $('#track-list li').draggable({
-                appendTo: 'body',
-                helper: 'clone'
-            });
-            $('#playlist').droppable({
-                drop: function(event, ui) {
-                }
-            });
-            $('#playlist').sortable();
-        },
+        initialize: function(options) {},
 
         render: function() {
             var self = this;
