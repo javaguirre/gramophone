@@ -42,7 +42,13 @@
     var Album = Backbone.Model.extend({});
     var Track = Backbone.Model.extend({});
 
-    var ArtistList = Backbone.Collection.extend({
+    var GenericCol = Backbone.Collection.extend({
+        parse: function(resp, xhr) {
+            return resp.objects;
+        }
+    });
+
+    var ArtistList = GenericCol.extend({
         model: Artist,
         url: '/artists',
 
@@ -51,7 +57,7 @@
         }
     });
 
-    var AlbumList = Backbone.Collection.extend({
+    var AlbumList = GenericCol.extend({
         model: Album,
         url: '/albums',
 
@@ -60,7 +66,7 @@
         }
     });
 
-    var TrackList = Backbone.Collection.extend({
+    var TrackList = GenericCol.extend({
         model: Track,
         url: function() {
             if(this.query) {

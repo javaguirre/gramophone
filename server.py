@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 
-from flask import Flask, render_template
+from flask import Flask, render_template, jsonify
 
 import db
 import explore
@@ -54,7 +54,7 @@ def tracks(album=None, artist=None):
             'album': track[5]
         })
 
-    return track_list
+    return jsonify({'objects': track_list})
 
 
 @app.route('/artists/')
@@ -68,7 +68,7 @@ def artists():
                 'artist': track[0],
             })
 
-    return artist_list
+    return jsonify({'objects': artist_list})
 
 
 @app.route('/albums/')
@@ -82,7 +82,7 @@ def albums():
                 'album': track[0],
             })
 
-    return album_list
+    return jsonify({'objects': album_list})
 
 
 ### SERVER SETUP ###
