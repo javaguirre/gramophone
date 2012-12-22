@@ -24,7 +24,8 @@ var utils = {
                 enableRemoveControls: true
                 },
                 swfPath: "/static/scripts/vendor",
-                supplied: "oga, mp3"
+                supplied: "oga, mp3",
+                solution: "flash, html"
         });
 
         return myPlaylist;
