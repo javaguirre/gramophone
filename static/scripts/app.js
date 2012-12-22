@@ -1,23 +1,17 @@
 //FIXME Provisional until we got namespacing
 var utils = {
-    addToPlaylist: function(track) {
-        var track_title = track.get('title');
-        if(!track_title) {
-            track_title = track.get('path');
-        }
-        var track_path = track.get('path');
-        var trackToAdd = $('<li>');
-        var linkTrack = $('<a>').attr('data-src', '/music/' + track_path).text(track_title);
-        var deleteTrack = $('<a>').addClass("delete-track").html($('<i>').addClass('icon-remove'));
-
-        trackToAdd.append(linkTrack);
-        trackToAdd.append(deleteTrack);
-        trackToAdd.appendTo($('#playlist'));
+    addTrack: function(track) {
+        //TODO Check if its ogg or mp3
+        Gramophone.player.add({title: track.get('title') || track.get('path'),
+                               artist: track.get('artist'),
+                               album: track.get('album'),
+                               duration: track.get('duration'),
+                               mp3: '/static/music' + track.get('path')});
     },
 
-    setPlaylist: function(objects) {
-        objects.each(function(track) {
-            utils.addToPlaylist(track);
+    addTracks: function(tracks) {
+        _.each(tracks, function(track) {
+            utils.addTrack(track);
         });
     },
 
@@ -51,7 +45,6 @@ var Gramophone = {
 };
 
 (function() {
-
     var Artist = Backbone.Model.extend({});
     var Album = Backbone.Model.extend({});
     var Track = Backbone.Model.extend({});
@@ -121,7 +114,6 @@ var Gramophone = {
 
         render: function() {
             var self = this;
-
             this.el.innerHTML = self.template({ album: self.model.toJSON() });
 
             return this;
@@ -131,7 +123,7 @@ var Gramophone = {
             var tracks = new TrackList({query: "album=" + encodeURIComponent(this.model.get('album'))});
             tracks.fetch({
                 success: function(data) {
-                    utils.setPlaylist(data);
+                    utils.addTracks(data.models);
                 }
             });
         },
@@ -163,7 +155,7 @@ var Gramophone = {
             var tracks = new TrackList({query: "artist=" + encodeURIComponent(this.model.get('artist'))});
             tracks.fetch({
                 success: function(data) {
-                    utils.setPlaylist(data);
+                    utils.addTracks(data.models);
                 }
             });
         },
@@ -191,12 +183,7 @@ var Gramophone = {
         },
 
         addToPlaylist: function() {
-            console.dir(this.model);
-            Gramophone.player.add({title: this.model.get('title') || this.model.get('path'),
-                                   artist: this.model.get('artist'),
-                                   album: this.model.get('album'),
-                                   duration: this.model.get('duration'),
-                                   mp3: '/static/music' + this.model.get('path')});
+            utils.addTrack(this.model);
         }
     });
 
@@ -204,8 +191,7 @@ var Gramophone = {
         el: $('#app'),
         events: {
             'click #add-all-to-playlist': 'addAllToPlaylist',
-            'click #searchTask' : 'search',
-            'click .icon-remove': 'removeTrack'
+            'click #searchTask' : 'search'
         },
         template: _.template($('#template-app').html()),
 
@@ -253,9 +239,7 @@ var Gramophone = {
             this.objects.bind('all',   this.render, this);
             this.objects.fetch();
 
-            //FIXME Provisional
-            this.parentElt.html('');
-            this.parentElt.append(this.template(this.objects));
+            this.parentElt.html('').append(this.template(this.objects));
         },
 
         addOne: function(object) {
@@ -277,20 +261,13 @@ var Gramophone = {
             this.objects.each(this.addOne);
         },
 
-        addToPlaylist: function() {
-        },
-
         addAllToPlaylist: function() {
-            console.log('ok');
+            utils.addTracks(this.objects.models);
         },
 
         search: function(e) {
             var letters = $("#searchText").val();
             this.renderList(this.objects.search(letters));
-        },
-
-        removeTrack: function(e) {
-            $(e.target).parent().parent().remove();
         }
     });
 
