@@ -2,6 +2,11 @@
 var utils = {
     addTrack: function(track) {
         //TODO Check if its ogg or mp3
+        $("#jquery_jplayer_1").jPlayer({
+            swfPath: "/static/scripts/vendor",
+            supplied: "mp3, oga"
+        });
+
         Gramophone.player.add({title: track.get('title') || track.get('path'),
                                artist: track.get('artist'),
                                album: track.get('album'),
@@ -16,10 +21,6 @@ var utils = {
     },
 
     initPlayer: function() {
-        $("#jquery_jplayer_1").jPlayer({
-            swfPath: "/static/scripts/vendor",
-            supplied: "mp3, oga"
-        });
         var myPlaylist = new jPlayerPlaylist({
             jPlayer: "#jquery_jplayer_1",
             cssSelectorAncestor: "#jp_container_1"
@@ -27,10 +28,11 @@ var utils = {
             playlistOptions: {
                 enableRemoveControls: true
                 },
-                swfPath: "/js",
+                swfPath: "/static/scripts/vendor",
                 supplied: "oga, mp3"
         });
 
+        console.dir(myPlaylist);
         return myPlaylist;
     }
 };
