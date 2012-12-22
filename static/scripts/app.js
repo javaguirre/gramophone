@@ -1,20 +1,4 @@
 (function() {
-    var TEMPLATE_URL = '';
-    var template_track;
-    var template_album;
-    var template_artist;
-
-    //FIXME Provisional
-    $.get(TEMPLATE_URL + '/static/templates/item.html', function(data) {
-        template_track = data;
-    });
-    $.get(TEMPLATE_URL + '/static/templates/album.html', function(data) {
-        template_album = data;
-    });
-    $.get(TEMPLATE_URL + '/static/templates/artist.html', function(data) {
-        template_artist = data;
-    });
-
     var utils = {
         addToPlaylist: function(track) {
             var track_title = track.get('title');
@@ -100,6 +84,7 @@
             'click .go-to-tracks': 'goToTracks'
         },
         tagName:  "li",
+        template: _.template($('#template-album').html()),
 
         initialize: function(options) {
         },
@@ -107,8 +92,7 @@
         render: function() {
             var self = this;
 
-            var compiled_template = _.template(template_album);
-            this.el.innerHTML = compiled_template({ album: self.model.toJSON() });
+            this.el.innerHTML = self.template({ album: self.model.toJSON() });
 
             return this;
         },
@@ -133,14 +117,14 @@
             'click .go-to-tracks': 'goToTracks'
         },
         tagName:  "li",
+        template: _.template($('#template-artist').html()),
 
         initialize: function(options) {},
 
         render: function() {
             var self = this;
 
-            var compiled_template = _.template(template_artist);
-            this.el.innerHTML = compiled_template({ artist: self.model.toJSON() });
+            this.el.innerHTML = self.template({ artist: self.model.toJSON() });
 
             return this;
         },
@@ -164,6 +148,7 @@
             'click .add-to-playlist': 'addToPlaylist'
         },
         tagName:  "li",
+        template: _.template($('#template-track').html()),
 
         initialize: function(options) {
             $('#track-list li').draggable({
@@ -180,8 +165,7 @@
         render: function() {
             var self = this;
 
-            var compiled_template = _.template(template_track);
-            this.el.innerHTML = compiled_template({ track: self.model.toJSON() });
+            this.el.innerHTML = self.template({ track: self.model.toJSON() });
 
             return this;
         },
@@ -198,12 +182,12 @@
             "click #searchTask" : "search",
             'click .icon-remove': 'removeTrack'
         },
+        template: _.template($('#template-app').html()),
 
         initialize: function(options) {
             var self = this,
                 parentElt = $('#track-list-app');
 
-            parentElt.template(TEMPLATE_URL + '/static/templates/app.html', {}, function() {
                 var query = options.query || '';
 
                 if(!options.view) {
@@ -222,12 +206,16 @@
                             break;
                     }
                 }
+                console.dir(self);
 
                 self.objects.bind('add',   self.addOne, self);
                 self.objects.bind('reset', self.addAll, self);
                 self.objects.bind('all',   self.render, self);
                 self.objects.fetch();
-            });
+
+                //FIXME Provisional
+                parentElt.html('');
+                parentElt.append(self.template(self.objects));
         },
 
         render: function() {
