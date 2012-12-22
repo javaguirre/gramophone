@@ -13,6 +13,7 @@
         <link rel="stylesheet" href="/static/styles/bootstrap.min.css">
         <link rel="stylesheet" href="/static/styles/bootstrap-responsive.min.css">
         <link rel="stylesheet" href="/static/styles/main.css">
+        <link rel="stylesheet" href="/static/styles/jplayer.blue.monday.css">
 
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
         <script src="/static/scripts/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
@@ -20,54 +21,42 @@
         <script src="/static/scripts/underscore-min.js"></script>
         <script src="/static/scripts/backbone-min.js"></script>
         <script src="/static/scripts/template.js"></script>
-        <script src="/static/audiojs/audiojs/audio.js"></script>
+        <script src="/static/scripts/vendor/jquery.jplayer.min.js"></script>
+        <script src="/static/scripts/vendor/jplayer.playlist.min.js"></script>
+
         <script>
-          $(function() {
-            // Setup the player to autoplay the next track
-            var a = audiojs.createAll({
-              trackEnded: function() {
-                var next = $('ol li.playing').next();
-                if (!next.length) next = $('ol li').first();
-                next.addClass('playing').siblings().removeClass('playing');
-                audio.load($('a', next).attr('data-src'));
-                audio.play();
-              }
+            $(function() {
+                $("#jquery_jplayer_1").jPlayer({
+                    ready: function(event) {
+                        $(this).jPlayer("setMedia", {
+                            mp3: "http://www.jplayer.org/audio/mp3/TSP-01-Cro_magnon_man.mp3",
+                            oga: "http://www.jplayer.org/audio/ogg/TSP-01-Cro_magnon_man.ogg"
+                        });
+                    },
+                    swfPath: "http://www.jplayer.org/2.1.0/js",
+                    supplied: "mp3, oga"
+                });
+                var myPlaylist = new jPlayerPlaylist({
+                    jPlayer: "#jquery_jplayer_1",
+                    cssSelectorAncestor: "#jp_container_1"
+                }, [
+                {
+                    title:"Cro Magnon Man",
+                    artist:"The Stark Palace",
+                    mp3:"http://www.jplayer.org/audio/mp3/TSP-01-Cro_magnon_man.mp3",
+                    oga:"http://www.jplayer.org/audio/ogg/TSP-01-Cro_magnon_man.ogg",
+                    poster: "http://www.jplayer.org/audio/poster/The_Stark_Palace_640x360.png"
+                }
+                    ], {
+                    playlistOptions: {
+                        enableRemoveControls: true
+                        },
+                        swfPath: "/js",
+                        supplied: "ogv, m4v, oga, mp3"
+                });
             });
-
-            // Load in the first track
-            var audio = a[0];
-                first = $('ol a').attr('data-src');
-            $('ol li').first().addClass('playing');
-            audio.load(first);
-
-            // Load in a track on click
-            $('ol li').live('click', function(e) {
-              e.preventDefault();
-              $(this).addClass('playing').siblings().removeClass('playing');
-              audio.load($('a', this).attr('data-src'));
-              audio.play();
-            });
-
-            // Keyboard shortcuts
-            $(document).keydown(function(e) {
-              var unicode = e.charCode ? e.charCode : e.keyCode;
-                 // right arrow
-              if (unicode == 39) {
-                var next = $('li.playing').next();
-                if (!next.length) next = $('ol li').first();
-                next.click();
-                // back arrow
-              } else if (unicode == 37) {
-                var prev = $('li.playing').prev();
-                if (!prev.length) prev = $('ol li').last();
-                prev.click();
-                // spacebar
-              } else if (unicode == 32) {
-                audio.playPause();
-              }
-            })
-          });
         </script>
+
     </head>
     <body id="app">
         <!--[if lt IE 7]>
@@ -96,9 +85,48 @@
         <div class="container-fluid">
             <div class="row-fluid">
                 <div id="wrapper">
-                  <audio></audio>
-                  <ol id="playlist">
-                  </ol>
+                    <!-- jPlayer -->
+                    <div id="jquery_jplayer_1" class="jp-jplayer"></div>
+                            <div id="jp_container_1" class="jp-audio">
+                                <div class="jp-type-single">
+                                    <div class="jp-gui jp-interface">
+                                        <ul class="jp-controls">
+                                            <li><a href="javascript:;" class="jp-play" tabindex="1">play</a></li>
+                                            <li><a href="javascript:;" class="jp-pause" tabindex="1">pause</a></li>
+                                            <li><a href="javascript:;" class="jp-stop" tabindex="1">stop</a></li>
+                                            <li><a href="javascript:;" class="jp-mute" tabindex="1" title="mute">mute</a></li>
+                                            <li><a href="javascript:;" class="jp-unmute" tabindex="1" title="unmute">unmute</a></li>
+                                            <li><a href="javascript:;" class="jp-volume-max" tabindex="1" title="max volume">max volume</a></li>
+                                        </ul>
+
+                                        <div class="jp-progress">
+                                            <div class="jp-seek-bar">
+                                                <div class="jp-play-bar"></div>
+                                            </div>
+                                        </div>
+                                        <div class="jp-volume-bar">
+                                            <div class="jp-volume-bar-value"></div>
+                                        </div>
+                                        <div class="jp-current-time"></div>
+                                        <div class="jp-duration"></div>
+                                    </div>
+                                    <div class="jp-title">
+                                        <ul>
+                                            <li>Cro Magnon Man</li>
+                                        </ul>
+                                    </div>
+                                    <div class="jp-no-solution">
+                                        <span>Update Required</span>
+                                        To play the media you will need to either update your browser to a recent version or update your <a href="http://get.adobe.com/flashplayer/" target="_blank">Flash plugin</a>.
+                                    </div>
+                                </div>
+                                <div class="jp-playlist">
+                                    <ul>
+                                        <li></li> <!-- Empty <li> so your HTML conforms with the W3C spec -->
+                                    </ul>
+                                </div>
+                            </div>
+                    <!-- End jPlayer -->
                 </div>
                 <div class="span9">
                     <ul>
