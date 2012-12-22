@@ -1,53 +1,56 @@
+//FIXME Provisional until we got namespacing
+var utils = {
+    addToPlaylist: function(track) {
+        var track_title = track.get('title');
+        if(!track_title) {
+            track_title = track.get('path');
+        }
+        var track_path = track.get('path');
+        var trackToAdd = $('<li>');
+        var linkTrack = $('<a>').attr('data-src', '/music/' + track_path).text(track_title);
+        var deleteTrack = $('<a>').addClass("delete-track").html($('<i>').addClass('icon-remove'));
+
+        trackToAdd.append(linkTrack);
+        trackToAdd.append(deleteTrack);
+        trackToAdd.appendTo($('#playlist'));
+    },
+
+    setPlaylist: function(objects) {
+        objects.each(function(track) {
+            utils.addToPlaylist(track);
+        });
+    },
+
+    initPlayer: function() {
+        $("#jquery_jplayer_1").jPlayer({
+            swfPath: "/static/scripts/vendor",
+            supplied: "mp3, oga"
+        });
+        var myPlaylist = new jPlayerPlaylist({
+            jPlayer: "#jquery_jplayer_1",
+            cssSelectorAncestor: "#jp_container_1"
+        }, [], {
+            playlistOptions: {
+                enableRemoveControls: true
+                },
+                swfPath: "/js",
+                supplied: "oga, mp3"
+        });
+
+        return myPlaylist;
+    }
+};
+
 var Gramophone = {
     init: function() {
         Gramophone.appView = new AppView({});
         Gramophone.router = new MyRouter();
+        Gramophone.player = utils.initPlayer();
         Backbone.history.start();
     }
 };
 
 (function() {
-    var utils = {
-        addToPlaylist: function(track) {
-            var track_title = track.get('title');
-            if(!track_title) {
-                track_title = track.get('path');
-            }
-            var track_path = track.get('path');
-            var trackToAdd = $('<li>');
-            var linkTrack = $('<a>').attr('data-src', '/music/' + track_path).text(track_title);
-            var deleteTrack = $('<a>').addClass("delete-track").html($('<i>').addClass('icon-remove'));
-
-            trackToAdd.append(linkTrack);
-            trackToAdd.append(deleteTrack);
-            trackToAdd.appendTo($('#playlist'));
-        },
-
-        setPlaylist: function(objects) {
-            objects.each(function(track) {
-                utils.addToPlaylist(track);
-            });
-        },
-
-        initPlayer: function() {
-            $("#jquery_jplayer_1").jPlayer({
-                swfPath: "/static/scripts/vendor",
-                supplied: "mp3, oga"
-            });
-            var myPlaylist = new jPlayerPlaylist({
-                jPlayer: "#jquery_jplayer_1",
-                cssSelectorAncestor: "#jp_container_1"
-            }, [], {
-                playlistOptions: {
-                    enableRemoveControls: true
-                    },
-                    swfPath: "/js",
-                    supplied: "oga, mp3"
-            });
-
-            return myPlaylist;
-        }
-    };
 
     var Artist = Backbone.Model.extend({});
     var Album = Backbone.Model.extend({});
@@ -134,7 +137,7 @@ var Gramophone = {
         },
 
         goToTracks: function() {
-            window.router.navigate('!/filter/album/' + encodeURIComponent(this.model.get('album')), true);
+            Gramophone.router.navigate('!/filter/album/' + encodeURIComponent(this.model.get('album')), true);
         }
     });
 
@@ -166,7 +169,7 @@ var Gramophone = {
         },
 
         goToTracks: function() {
-            window.router.navigate('!/filter/artist/' + encodeURIComponent(this.model.get('artist')), true);
+            Gramophone.router.navigate('!/filter/artist/' + encodeURIComponent(this.model.get('artist')), true);
         }
     });
 
@@ -198,7 +201,12 @@ var Gramophone = {
         },
 
         addToPlaylist: function() {
-
+            console.dir(this.model);
+            Gramophone.player.add({title: this.model.get('title') || this.model.get('path'),
+                                   artist: this.model.get('artist'),
+                                   album: this.model.get('album'),
+                                   duration: this.model.get('duration'),
+                                   mp3: '/static/music' + this.model.get('path')});
         }
     });
 
@@ -213,7 +221,6 @@ var Gramophone = {
 
         initialize: function(options) {
             this.parentElt = $('#track-list-app');
-            this.player = utils.initPlayer();
         },
 
         render: function() {
@@ -281,7 +288,6 @@ var Gramophone = {
         },
 
         addToPlaylist: function() {
-            //this.player.add({title: 'ok', mp3: '/static/music/BillyElSucio.mp3'});
         },
 
         addAllToPlaylist: function() {
