@@ -1,3 +1,11 @@
+var Gramophone = {
+    init: function() {
+        Gramophone.appView = new AppView({});
+        Gramophone.router = new MyRouter();
+        Backbone.history.start();
+    }
+};
+
 (function() {
     var utils = {
         addToPlaylist: function(track) {
@@ -19,6 +27,25 @@
             objects.each(function(track) {
                 utils.addToPlaylist(track);
             });
+        },
+
+        initPlayer: function() {
+            $("#jquery_jplayer_1").jPlayer({
+                swfPath: "/static/scripts/vendor",
+                supplied: "mp3, oga"
+            });
+            var myPlaylist = new jPlayerPlaylist({
+                jPlayer: "#jquery_jplayer_1",
+                cssSelectorAncestor: "#jp_container_1"
+            }, [], {
+                playlistOptions: {
+                    enableRemoveControls: true
+                    },
+                    swfPath: "/js",
+                    supplied: "oga, mp3"
+            });
+
+            return myPlaylist;
         }
     };
 
@@ -80,8 +107,8 @@
 
     var AlbumView = Backbone.View.extend({
         events: {
-            'click .add-album-to-playlist': 'addToPlaylist',
-            'click .go-to-tracks': 'goToTracks'
+            'click .go-to-tracks': 'goToTracks',
+            'click .add-album-to-playlist': 'addToPlaylist'
         },
         tagName:  "li",
         template: _.template($('#template-album').html()),
@@ -113,8 +140,8 @@
 
     var ArtistView = Backbone.View.extend({
         events: {
-            'click .add-artist-to-playlist': 'addToPlaylist',
-            'click .go-to-tracks': 'goToTracks'
+            'click .go-to-tracks': 'goToTracks',
+            'click .add-artist-to-playlist': 'addToPlaylist'
         },
         tagName:  "li",
         template: _.template($('#template-artist').html()),
@@ -145,7 +172,7 @@
 
     var TrackView = Backbone.View.extend({
         events: {
-            'click .add-to-playlist': 'addToPlaylist'
+            'click .add-track-to-playlist': 'addToPlaylist'
         },
         tagName:  "li",
         template: _.template($('#template-track').html()),
@@ -171,51 +198,22 @@
         },
 
         addToPlaylist: function() {
-            utils.addToPlaylist(this.model);
+
         }
     });
 
-    window.TrackApp = Backbone.View.extend({
+    window.AppView = Backbone.View.extend({
         el: $('#app'),
         events: {
             'click #add-all-to-playlist': 'addAllToPlaylist',
-            "click #searchTask" : "search",
+            'click #searchTask' : 'search',
             'click .icon-remove': 'removeTrack'
         },
         template: _.template($('#template-app').html()),
 
         initialize: function(options) {
-            var self = this,
-                parentElt = $('#track-list-app');
-
-                var query = options.query || '';
-
-                if(!options.view) {
-                    self.objects = new TrackList({query: query});
-                }
-                else {
-                    switch(options.view) {
-                        case('album'):
-                            self.objects = new AlbumList();
-                            break;
-                        case('artist'):
-                            self.objects = new ArtistList();
-                            break;
-                        default:
-                            self.objects = new TrackList({query: query});
-                            break;
-                    }
-                }
-                console.dir(self);
-
-                self.objects.bind('add',   self.addOne, self);
-                self.objects.bind('reset', self.addAll, self);
-                self.objects.bind('all',   self.render, self);
-                self.objects.fetch();
-
-                //FIXME Provisional
-                parentElt.html('');
-                parentElt.append(self.template(self.objects));
+            this.parentElt = $('#track-list-app');
+            this.player = utils.initPlayer();
         },
 
         render: function() {
@@ -233,7 +231,34 @@
                 });
                 $("#track-list").append(view.render().el);
             });
+
             return this;
+        },
+
+        setView: function(options) {
+            switch(options.view) {
+                case('track'):
+                    this.objects = new TrackList({query: options.query});
+                    break;
+                case('album'):
+                    this.objects = new AlbumList();
+                    break;
+                case('artist'):
+                    this.objects = new ArtistList();
+                    break;
+                default:
+                    this.objects = new TrackList({query: query});
+                    break;
+            }
+
+            this.objects.bind('add',   this.addOne, this);
+            this.objects.bind('reset', this.addAll, this);
+            this.objects.bind('all',   this.render, this);
+            this.objects.fetch();
+
+            //FIXME Provisional
+            this.parentElt.html('');
+            this.parentElt.append(this.template(this.objects));
         },
 
         addOne: function(object) {
@@ -255,19 +280,12 @@
             this.objects.each(this.addOne);
         },
 
-        addAllToPlaylist: function() {
-            this.objects.each(function(track) {
-                var track_title = track.get('title');
-                if(!track_title) {
-                    track_title = track.get('path');
-                }
-                var track_path = track.get('path');
-                var trackToAdd = $('<li>');
-                var link_track = $('<a>').attr('data-src', '/music/' + track_path).text(track_title);
+        addToPlaylist: function() {
+            //this.player.add({title: 'ok', mp3: '/static/music/BillyElSucio.mp3'});
+        },
 
-                trackToAdd.append(link_track);
-                trackToAdd.appendTo($('#wrapper ol'));
-            });
+        addAllToPlaylist: function() {
+            console.log('ok');
         },
 
         search: function(e) {
@@ -290,11 +308,11 @@
         },
 
         index: function() {
-            var view = new TrackApp({});
+            Gramophone.appView.setView({view: 'track'});
         },
 
         filter: function(type, query) {
-            var view = new TrackApp({query: type + "=" + query});
+            Gramophone.appView.setView({view: 'track', query: type + "=" + query});
         },
 
         /*search: function(query) {*/
@@ -302,11 +320,11 @@
         /*},*/
 
         artists: function() {
-            var view = new TrackApp({view: 'artist'});
+            Gramophone.appView.setView({view: 'artist'});
         },
 
         albums: function() {
-            var view = new TrackApp({view: 'album'});
+            Gramophone.appView.setView({view: 'album'});
         }
     });
 }());

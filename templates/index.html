@@ -24,38 +24,7 @@
         <script src="/static/scripts/vendor/jquery.jplayer.min.js"></script>
         <script src="/static/scripts/vendor/jplayer.playlist.min.js"></script>
 
-        <script>
-            $(function() {
-                $("#jquery_jplayer_1").jPlayer({
-                    ready: function(event) {
-                        $(this).jPlayer("setMedia", {
-                            mp3: "http://www.jplayer.org/audio/mp3/TSP-01-Cro_magnon_man.mp3",
-                            oga: "http://www.jplayer.org/audio/ogg/TSP-01-Cro_magnon_man.ogg"
-                        });
-                    },
-                    swfPath: "/static/scripts/vendor",
-                    supplied: "mp3, oga"
-                });
-                var myPlaylist = new jPlayerPlaylist({
-                    jPlayer: "#jquery_jplayer_1",
-                    cssSelectorAncestor: "#jp_container_1"
-                }, [
-                {
-                    title:"Cro Magnon Man",
-                    artist:"The Stark Palace",
-                    mp3:"http://www.jplayer.org/audio/mp3/TSP-01-Cro_magnon_man.mp3",
-                    oga:"http://www.jplayer.org/audio/ogg/TSP-01-Cro_magnon_man.ogg",
-                    poster: "http://www.jplayer.org/audio/poster/The_Stark_Palace_640x360.png"
-                }
-                    ], {
-                    playlistOptions: {
-                        enableRemoveControls: true
-                        },
-                        swfPath: "/js",
-                        supplied: "oga, mp3"
-                });
-            });
-        </script>
+        <!-- TEMPLATES -->
         <script type="text/html" id="template-app">
             {% include "app.html" %}
         </script>
@@ -130,8 +99,7 @@
         <script src="/static/scripts/app.js"></script>
         <script type="text/javascript" charset="utf-8">
             $(function() {
-                window.router = new MyRouter();
-                Backbone.history.start();
+                Gramophone.init();
             });
         </script>
     </body>
