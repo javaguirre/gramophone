@@ -5,13 +5,13 @@
     var template_artist;
 
     //FIXME Provisional
-    $.get(TEMPLATE_URL + '/templates/item.html', function(data) {
+    $.get(TEMPLATE_URL + '/static/templates/item.html', function(data) {
         template_track = data;
     });
-    $.get(TEMPLATE_URL + '/templates/album.html', function(data) {
+    $.get(TEMPLATE_URL + '/static/templates/album.html', function(data) {
         template_album = data;
     });
-    $.get(TEMPLATE_URL + '/templates/artist.html', function(data) {
+    $.get(TEMPLATE_URL + '/static/templates/artist.html', function(data) {
         template_artist = data;
     });
 
@@ -197,7 +197,7 @@
             var self = this,
                 parentElt = $('#track-list-app');
 
-            parentElt.template(TEMPLATE_URL + '/templates/app.html', {}, function() {
+            parentElt.template(TEMPLATE_URL + '/static/templates/app.html', {}, function() {
                 var query = options.query || '';
 
                 if(!options.view) {
