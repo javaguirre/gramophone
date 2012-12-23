@@ -11,7 +11,7 @@ app = Flask(__name__)
 
 app.config['PROJECT_ROOT'] = os.path.dirname(os.path.abspath(__file__))
 app.config['MUSIC_PATH'] = os.environ.get('MUSIC_PATH', os.path.dirname('static/music/'))
-app.config['DATABASE'] = os.path.join(app.config.get('PROJECT_ROOT'), 'gramo.db')
+app.config['DATABASE'] = os.path.join(app.config.get('PROJECT_ROOT'), 'metadata.db')
 
 
 app.register_blueprint(db.blueprint)
