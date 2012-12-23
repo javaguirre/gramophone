@@ -3,8 +3,7 @@ import os
 
 from flask import Flask, render_template, jsonify, request
 
-import db
-import explore
+from gramophone import db, explore
 
 
 app = Flask(__name__)
