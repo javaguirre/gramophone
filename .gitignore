@@ -1,3 +1,5 @@
-*.sw?
+*.swp
+*.swo
 *.pyc
 *.db
+static/music
