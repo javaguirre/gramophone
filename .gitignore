@@ -2,4 +2,5 @@
 *.swo
 *.pyc
 *.db
-static/music
+/static/music/
+/venv/
