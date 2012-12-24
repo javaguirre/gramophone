@@ -32,10 +32,10 @@ def update_db():
     if not os.path.isfile(DBFILE) or os.path.getsize(DBFILE) == 0:
         db.init_db()
         db.create_tracks(tracks)
-        return 'created db and tracks'
+        return jsonify({'status': 0, 'msg': 'created db and tracks'})
     else:
         db.update_tracks(tracks)
-        return 'updated tracks'
+        return jsonify({'status': 0, 'msg': 'updated tracks'})
 
 
 @app.route('/tracks/')

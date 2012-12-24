@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import os
 
 from hsaudiotag import auto
@@ -9,7 +10,7 @@ SUPPORTED_FILETYPES = ['mp3', 'mp4', 'ogg']
 def explore_collection(original_path):
     tracks = []
 
-    for (path, dirs, files) in os.walk(original_path):
+    for (path, dirs, files) in os.walk(u'%s' % original_path):
         for f in files:
             if f.split('.')[-1] in SUPPORTED_FILETYPES:
                 abs_path = os.path.join(path, f)

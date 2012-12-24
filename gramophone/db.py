@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from contextlib import closing
 from collections import namedtuple
 
