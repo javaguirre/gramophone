@@ -188,6 +188,7 @@ var Gramophone = {
         el: $('#app'),
         events: {
             'click #add-all-to-playlist': 'addAllToPlaylist',
+            'click #hide_playlist': 'hidePlaylist',
             'click #searchTask' : 'search'
         },
         template: _.template($('#template-app').html()),
@@ -262,9 +263,22 @@ var Gramophone = {
             utils.addTracks(this.objects.models);
         },
 
-        search: function(e) {
+        search: function() {
             var letters = $("#searchText").val();
             this.renderList(this.objects.search(letters));
+        },
+
+        hidePlaylist: function(ev) {
+            ev.preventDefault();
+            var tracks_count = $('.jp-playlist ul').children().length;
+
+            if($('.jp-playlist').is(':visible')) {
+                $(ev.target).text('Show ' + tracks_count + ' tracks in the playlist');
+            }
+            else {
+                $(ev.target).text('Hide Playlist');
+            }
+            $('.jp-playlist').slideToggle();
         }
     });
 

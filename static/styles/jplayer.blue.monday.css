@@ -37,7 +37,8 @@ div.jp-audio-stream {
 	width:182px;
 }
 div.jp-video-270p {
-	width:480px;
+    /*width:480px;*/
+    width: 100%;
 }
 div.jp-video-360p {
 	width:640px;
@@ -107,6 +108,7 @@ div.jp-controls-holder {
 	position: relative;
 	overflow:hidden;
 	top:-8px; /* This negative value depends on the size of the text in jp-currentTime and jp-duration */
+    padding-top: 20px;
 }
 
 div.jp-interface ul.jp-controls {
@@ -396,7 +398,7 @@ div.jp-type-single div.jp-playlist {
 }
 div.jp-title ul,
 div.jp-playlist ul {
-	list-style-type:none;
+	list-style-type:decimal;
 	margin:0;
 	padding:0 20px;
 	font-size:.72em;
@@ -422,9 +424,12 @@ div.jp-type-playlist div.jp-playlist li:last-child {
 	border-bottom:none;
 }
 div.jp-type-playlist div.jp-playlist li.jp-playlist-current {
-	list-style-type:square;
+    list-style-type:none;
 	list-style-position:inside;
 	padding-left:7px;
+}
+div.jp-type-playlist div.jp-playlist li.jp-playlist-current:before {
+    content: '♬ ';
 }
 div.jp-type-playlist div.jp-playlist a {
 	color: #333;
