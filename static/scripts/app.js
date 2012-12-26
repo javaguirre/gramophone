@@ -1,12 +1,21 @@
 //FIXME Provisional until we got namespacing
 var utils = {
+    checkTrackFormat: function(path) {
+        if(path.indexOf('.mp3', path.length - 4) !== -1) {
+            return 'mp3';
+        } else if(path.indexOf('.ogg', path.length -4) !== -1) {
+            return 'oga';
+        }
+    },
+
     addTrack: function(track) {
-        //TODO Check if its ogg or mp3
-        Gramophone.player.add({title: track.get('title') || track.get('path'),
-                               artist: track.get('artist'),
-                               album: track.get('album'),
-                               duration: track.get('duration'),
-                               mp3: '/static/music' + track.get('path')});
+        var format = utils.checkTrackFormat(track.get('path'));
+        var track_obj = {title: track.get('title') || track.get('path'),
+                         artist: track.get('artist'),
+                         album: track.get('album'),
+                         duration: track.get('duration')};
+        track_obj[format] = '/static/music' + track.get('path');
+        App.player.add(track_obj);
     },
 
     addTracks: function(tracks) {
@@ -32,11 +41,11 @@ var utils = {
     }
 };
 
-var Gramophone = {
+var App = {
     init: function() {
-        Gramophone.appView = new AppView({});
-        Gramophone.router = new MyRouter();
-        Gramophone.player = utils.initPlayer();
+        App.appView = new AppView({});
+        App.router = new MyRouter();
+        App.player = utils.initPlayer();
         Backbone.history.start();
     }
 };
@@ -126,7 +135,7 @@ var Gramophone = {
         },
 
         goToTracks: function() {
-            Gramophone.router.navigate('!/filter/album/' + encodeURIComponent(this.model.get('album')), true);
+            App.router.navigate('!/filter/album/' + encodeURIComponent(this.model.get('album')), true);
         }
     });
 
@@ -158,7 +167,7 @@ var Gramophone = {
         },
 
         goToTracks: function() {
-            Gramophone.router.navigate('!/filter/artist/' + encodeURIComponent(this.model.get('artist')), true);
+            App.router.navigate('!/filter/artist/' + encodeURIComponent(this.model.get('artist')), true);
         }
     });
 
@@ -292,19 +301,19 @@ var Gramophone = {
         },
 
         index: function() {
-            Gramophone.appView.setView({view: 'track'});
+            App.appView.setView({view: 'track'});
         },
 
         filter: function(type, query) {
-            Gramophone.appView.setView({view: 'track', query: type + "=" + query});
+            App.appView.setView({view: 'track', query: type + "=" + query});
         },
 
         artists: function() {
-            Gramophone.appView.setView({view: 'artist'});
+            App.appView.setView({view: 'artist'});
         },
 
         albums: function() {
-            Gramophone.appView.setView({view: 'album'});
+            App.appView.setView({view: 'album'});
         }
     });
 }());
