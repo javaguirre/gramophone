@@ -47,10 +47,15 @@
             {% include "player.html" %}
             <button id="hide_playlist" class="btn btn-small"><i class="icon-list-alt"></i> Hide Playlist</button>
             <button id="clear_playlist" class="btn btn-small"><i class="icon-remove"></i> Clear Playlist</button>
+            <button id="update_db" class="btn btn-small"><i class="icon-refresh"></i> Update Database</button>
             <!-- End jPlayer -->
         </div>
 
         <div class="container-fluid">
+            <div class="alert" id="messages">
+              <button type="button" class="close" data-dismiss="alert">&times;</button>
+              <span id="message-content"></span>
+            </div>
             <div class="row-fluid">
             </div>
             <div class="row-fluid">

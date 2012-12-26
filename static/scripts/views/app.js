@@ -7,11 +7,13 @@ app.AppView = Backbone.View.extend({
         'click #hide_playlist': 'hidePlaylist',
         'click #clear_playlist': 'clearPlaylist',
         'click #searchTask' : 'search',
-        'click #go-back': 'goBack'
+        'click #go-back': 'goBack',
+        'click #update_db': 'updateDb'
     },
     template: _.template($('#template-app').html()),
 
     initialize: function(options) {
+        $('#messages').hide();
         this.parentElt = $('#track-list-app');
     },
 
@@ -100,6 +102,16 @@ app.AppView = Backbone.View.extend({
 
     goBack: function() {
         window.history.back();
+    },
+
+    updateDb: function(ev) {
+        $(ev.target).attr('disabled', 'disabled');
+        $.get('/update_db', function(data) {
+            $('#message-content').text('Db updated successfully!');
+            $('#messages').addClass('alert-success').show();
+
+            $(ev.target).removeAttr('disabled');
+        });
     }
 });
 
