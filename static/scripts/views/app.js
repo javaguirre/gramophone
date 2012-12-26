@@ -6,7 +6,8 @@ app.AppView = Backbone.View.extend({
         'click #add-all-to-playlist': 'addAllToPlaylist',
         'click #hide_playlist': 'hidePlaylist',
         'click #clear_playlist': 'clearPlaylist',
-        'click #searchTask' : 'search',
+        'keyup #searchText': 'search',
+        'click #searchAction': 'search',
         'click #go-back': 'goBack',
         'click #update_db': 'updateDb'
     },
@@ -81,7 +82,22 @@ app.AppView = Backbone.View.extend({
 
     search: function() {
         var letters = $("#searchText").val();
-        this.addAll(this.objects.search(letters));
+
+        //FIXME
+        if(this.objects.models.length > 0) {
+            if(this.objects.models[0] instanceof app.Track &&
+               this.objects.query.indexOf('artist=') == -1 &&
+               this.objects.query.indexOf('album=') == -1) {
+                var query = this.objects.query = 'text' + '=' + letters;
+                this.objects.fetch();
+            }
+            else {
+                this.addAll(this.objects.search(letters));
+            }
+        }
+        else {
+            this.addAll(this.objects.search(letters));
+        }
     },
 
     hidePlaylist: function(ev) {

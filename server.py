@@ -42,7 +42,8 @@ def update_db():
 def tracks():
     album = request.args.get('album', None)
     artist = request.args.get('artist', None)
-    tracks = db.select_tracks(album, artist)
+    text = request.args.get('text', None)
+    tracks = db.select_tracks(album, artist, text)
     track_list = []
 
     for track in tracks:

@@ -67,7 +67,7 @@ def update_tracks(tracks):
     g.db.commit()
 
 
-def select_tracks(album=None, artist=None):
+def select_tracks(album=None, artist=None, text=None):
     query = 'SELECT * FROM tracks'
 
     # TODO don't do string replacement!!!
@@ -75,6 +75,9 @@ def select_tracks(album=None, artist=None):
         query = ' '.join([query, "WHERE album='%s'" % album])
     elif artist:
         query = ' '.join([query, "WHERE artist='%s'" % artist])
+    elif text:
+        query = ' '.join([query, "WHERE title LIKE '%%%(text)s%%'" % {'text': text}])
+
     if not album and not artist:
         query = ' '.join([query, 'LIMIT 20'])
 

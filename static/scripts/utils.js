@@ -14,6 +14,7 @@ app.utils = {
         var track_obj = {title: track.get('title') || track.get('path'),
                          artist: track.get('artist'),
                          album: track.get('album'),
+                         /*poster: '/static/img/poster.jpg'*/
                          duration: track.get('duration')};
         track_obj[format] = '/static/music' + track.get('path');
         app.playerObj.add(track_obj);
