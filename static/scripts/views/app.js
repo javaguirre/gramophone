@@ -18,7 +18,7 @@ app.AppView = Backbone.View.extend({
         return this;
     },
 
-    renderList : function(tracks){
+    renderList: function(tracks){
         $('#track-list').html("");
 
         tracks.each(function(track){
@@ -34,17 +34,14 @@ app.AppView = Backbone.View.extend({
 
     setView: function(options) {
         switch(options.view) {
-            case('track'):
-                this.objects = new app.TrackList({query: options.query});
-                break;
             case('album'):
-                this.objects = new app.AlbumList();
+                this.objects = new app.AlbumList({query: options.query});
                 break;
             case('artist'):
-                this.objects = new app.ArtistList();
+                this.objects = new app.ArtistList({query: options.query});
                 break;
             default:
-                this.objects = new app.TrackList({query: query});
+                this.objects = new app.TrackList({query: options.query});
                 break;
         }
 

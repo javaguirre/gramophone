@@ -6,7 +6,8 @@ from flask import Blueprint, g, current_app
 import sqlite3
 
 
-# A blueprint is similar to an app object, see http://flask.pocoo.org/docs/blueprints/
+# A blueprint is similar to an app object,
+# see http://flask.pocoo.org/docs/blueprints/
 blueprint = Blueprint('db', __name__)
 
 
@@ -58,7 +59,8 @@ def create_tracks(tracks):
 def update_tracks(tracks):
     cur = g.db.cursor()
     for track in tracks:
-        query_track = cur.execute('SELECT path FROM tracks WHERE path=?', [track[0]]).fetchone()
+        query_track = cur.execute('SELECT path FROM tracks WHERE path=?',
+                                  [track[0]]).fetchone()
         if not query_track:
             cur.execute("""INSERT INTO tracks (path, title, track, duration,
                        artist, album) VALUES (?,?,?,?,?,?)""", track)
@@ -79,8 +81,13 @@ def select_tracks(album=None, artist=None):
     return g.db.execute(query).fetchall()
 
 
-def select_albums():
-    return g.db.execute('SELECT DISTINCT(album) FROM tracks').fetchall()
+def select_albums(artist=None):
+    query = 'SELECT DISTINCT(album) FROM tracks'
+
+    if artist:
+        query = ' '.join([query, "WHERE artist='%s'" % artist])
+
+    return g.db.execute(query).fetchall()
 
 
 def select_artists():

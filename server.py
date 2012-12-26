@@ -74,7 +74,8 @@ def artists():
 
 @app.route('/albums/')
 def albums():
-    tracks = db.select_albums()
+    artist = request.args.get('artist', None)
+    tracks = db.select_albums(artist)
     album_list = []
 
     for track in tracks:

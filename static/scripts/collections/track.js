@@ -17,12 +17,12 @@ app.TrackList = app.GenericCol.extend({
     },
 
     search: function(letters){
-        if(letters === "")
+        if(letters === '')
             return this;
 
-        var pattern = new RegExp(letters,"gi");
+        var pattern = new RegExp(letters, 'gi');
         return _(this.filter(function(data) {
-            return pattern.test(data.get("title")) ||
+            return pattern.test(data.get('title')) ||
                    pattern.test(data.get('path'));
         }));
     }

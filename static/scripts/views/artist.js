@@ -3,6 +3,7 @@ var app = app || {};
 app.ArtistView = Backbone.View.extend({
     events: {
         'click .go-to-tracks': 'goToTracks',
+        'click .artist-link': 'goToAlbums',
         'click .add-artist-to-playlist': 'addToPlaylist'
     },
     tagName:  "li",
@@ -29,5 +30,10 @@ app.ArtistView = Backbone.View.extend({
 
     goToTracks: function() {
         app.routerObj.navigate('!/filter/artist/' + encodeURIComponent(this.model.get('artist')), true);
+    },
+
+    goToAlbums: function(ev) {
+        ev.preventDefault();
+        app.routerObj.navigate('!/filter_album/artist/' + encodeURIComponent(this.model.get('artist')), true);
     }
 });
