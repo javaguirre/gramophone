@@ -5,7 +5,8 @@ app.AppView = Backbone.View.extend({
     events: {
         'click #add-all-to-playlist': 'addAllToPlaylist',
         'click #hide_playlist': 'hidePlaylist',
-        'click #searchTask' : 'search'
+        'click #searchTask' : 'search',
+        'click #go-back': 'goBack'
     },
     template: _.template($('#template-app').html()),
 
@@ -37,6 +38,12 @@ app.AppView = Backbone.View.extend({
         this.objects.fetch();
 
         this.parentElt.html('').append(this.template(this.objects));
+
+        if(options.query) {
+            var query_list = options.query.split('=');
+            $('#query-key').text(query_list[0] + ': ');
+            $('#query-value').text(decodeURIComponent(query_list[1]));
+        }
     },
 
     addOne: function(object) {
@@ -85,6 +92,10 @@ app.AppView = Backbone.View.extend({
             $(ev.target).text('Hide Playlist');
         }
         $('.jp-playlist').slideToggle();
+    },
+
+    goBack: function() {
+        window.history.back();
     }
 });
 

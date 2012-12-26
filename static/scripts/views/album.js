@@ -3,7 +3,8 @@ var app = app || {};
 app.AlbumView = Backbone.View.extend({
     events: {
         'click .go-to-tracks': 'goToTracks',
-        'click .add-album-to-playlist': 'addToPlaylist'
+        'click .add-album-to-playlist': 'addToPlaylist',
+        'click .album-link': 'goToTracks'
     },
     tagName:  "li",
     template: _.template($('#template-album').html()),
@@ -27,7 +28,8 @@ app.AlbumView = Backbone.View.extend({
         });
     },
 
-    goToTracks: function() {
+    goToTracks: function(ev) {
+        ev.preventDefault();
         app.routerObj.navigate('!/filter/album/' + encodeURIComponent(this.model.get('album')), true);
     }
 });
