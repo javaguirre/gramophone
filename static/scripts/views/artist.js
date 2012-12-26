@@ -32,8 +32,7 @@ app.ArtistView = Backbone.View.extend({
         app.routerObj.navigate('!/filter/artist/' + encodeURIComponent(this.model.get('artist')), true);
     },
 
-    goToAlbums: function(ev) {
-        ev.preventDefault();
+    goToAlbums: function() {
         app.routerObj.navigate('!/filter_album/artist/' + encodeURIComponent(this.model.get('artist')), true);
     }
 });

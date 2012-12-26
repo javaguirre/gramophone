@@ -5,6 +5,7 @@ app.AppView = Backbone.View.extend({
     events: {
         'click #add-all-to-playlist': 'addAllToPlaylist',
         'click #hide_playlist': 'hidePlaylist',
+        'click #clear_playlist': 'clearPlaylist',
         'click #searchTask' : 'search',
         'click #go-back': 'goBack'
     },
@@ -82,16 +83,19 @@ app.AppView = Backbone.View.extend({
     },
 
     hidePlaylist: function(ev) {
-        ev.preventDefault();
         var tracks_count = $('.jp-playlist ul').children().length;
 
         if($('.jp-playlist').is(':visible')) {
             $(ev.target).text('Show ' + tracks_count + ' tracks in the playlist');
         }
         else {
-            $(ev.target).text('Hide Playlist');
+            $(ev.target).html('<i class="icon-list-alt"></i> Hide Playlist');
         }
         $('.jp-playlist').slideToggle();
+    },
+
+    clearPlaylist: function() {
+        app.playerObj.remove();
     },
 
     goBack: function() {

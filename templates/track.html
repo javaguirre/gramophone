@@ -1,3 +1,8 @@
-<a href="<%= track.path %>" data-src="<%= track.path %>" class="track">
-    <%= track.title || track.path %>
-</a> <a class="add-track-to-playlist"><i class="icon-plus"></i></a>
+<span>
+    <strong>
+        <%= track.title || track.path %>
+    </strong>
+</span>
+
+<button class=" btn btn-small add-track-to-playlist" href=""><i class="icon-plus"></i> Add</button>
+<small><span><%= track.album %></span> by <span><%= track.artist %></span></small>

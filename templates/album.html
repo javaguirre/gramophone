@@ -1,5 +1,10 @@
-<a href="" data-src="" class="album album-link">
-    <%= album.album %>
-</a>
-<a class="add-album-to-playlist"><i class="icon-plus"></i></a>
-<a class="go-to-tracks"><i class="icon-arrow-right"></i></a>
+<span>
+    <strong>
+        <%= album.album %>
+    </strong>
+</span>
+
+<div class="btn-group">
+    <button class="btn btn-small add-album-to-playlist" href=""><i class="icon-plus"></i> Add</button>
+    <button class="btn btn-small go-to-tracks" href=""><i class="icon-arrow-right"></i> Tracks</button>
+</div>
