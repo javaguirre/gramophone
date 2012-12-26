@@ -6,7 +6,8 @@ app.ArtistView = Backbone.View.extend({
         'click .artist-link': 'goToAlbums',
         'click .add-artist-to-playlist': 'addToPlaylist'
     },
-    tagName:  "li",
+    tagName:  'div',
+    className: 'row-fluid',
     template: _.template($('#template-artist').html()),
 
     initialize: function(options) {},

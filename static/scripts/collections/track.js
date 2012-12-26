@@ -16,6 +16,12 @@ app.TrackList = app.GenericCol.extend({
         }
     },
 
+    comparator: function(track) {
+        if(track.get('track')) {
+            return track.get('track');
+        }
+    },
+
     search: function(letters){
         if(letters === '')
             return this;

@@ -6,7 +6,8 @@ app.AlbumView = Backbone.View.extend({
         'click .add-album-to-playlist': 'addToPlaylist',
         'click .album-link': 'goToTracks'
     },
-    tagName:  "li",
+    tagName:  'div',
+    className: 'row-fluid',
     template: _.template($('#template-album').html()),
 
     initialize: function(options) {

@@ -4,7 +4,8 @@ app.TrackView = Backbone.View.extend({
     events: {
         'click .add-track-to-playlist': 'addToPlaylist'
     },
-    tagName:  "li",
+    tagName:  'div',
+    className: 'row-fluid',
     template: _.template($('#template-track').html()),
 
     initialize: function(options) {},

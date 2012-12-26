@@ -1,8 +1,15 @@
-<span>
-    <strong>
-        <%= track.title || track.path %>
-    </strong>
-</span>
+<div class="span4">
+    <span>
+        <strong>
+            <%= track.track %>.- <%= track.title || track.path %>
+        </strong>
+    </span>
+</div>
 
-<button class=" btn btn-small add-track-to-playlist" href=""><i class="icon-plus"></i> Add</button>
-<small><span><%= track.time %></span> - <span><%= track.album %></span> by <span><%= track.artist %></span></small>
+<div class="span2">
+    <button class=" btn btn-small add-track-to-playlist" href=""><i class="icon-plus"></i> Add</button>
+</div>
+
+<div class="span6">
+    <small><span><%= track.time %></span> - <span><%= track.album %></span> by <span><%= track.artist %></span></small>
+</div>
