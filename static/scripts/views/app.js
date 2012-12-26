@@ -18,20 +18,6 @@ app.AppView = Backbone.View.extend({
         return this;
     },
 
-    renderList: function(tracks){
-        $('#track-list').html("");
-
-        tracks.each(function(track){
-            var view = new app.TrackView({
-                model: track,
-                objects: this.objects
-            });
-            $("#track-list").append(view.render().el);
-        });
-
-        return this;
-    },
-
     setView: function(options) {
         switch(options.view) {
             case('album'):
@@ -68,8 +54,15 @@ app.AppView = Backbone.View.extend({
         this.$("#track-list").append(view.render().el);
     },
 
-    addAll: function() {
-        this.objects.each(this.addOne);
+    addAll: function(objects) {
+        $('#track-list').html("");
+
+        if(objects) {
+            objects.each(this.addOne);
+        }
+        else {
+            this.objects.each(this.addOne);
+        }
     },
 
     addAllToPlaylist: function() {
@@ -78,7 +71,7 @@ app.AppView = Backbone.View.extend({
 
     search: function() {
         var letters = $("#searchText").val();
-        this.renderList(this.objects.search(letters));
+        this.addAll(this.objects.search(letters));
     },
 
     hidePlaylist: function(ev) {
