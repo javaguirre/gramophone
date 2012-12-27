@@ -30,3 +30,9 @@ Setup
     python server.py
 
 Visit `http://localhost:5000/update_db` to initialize or update the database.
+
+
+License
+-------
+
+[AGPLv3](http://www.gnu.org/licenses/agpl-3.0.html), see `LICENSE` file.
