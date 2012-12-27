@@ -28,8 +28,8 @@ def index():
 def update_db():
     tracks = explore.explore_collection(app.config['MUSIC_PATH'])
 
-    DBFILE = app.config['DATABASE']
-    if not os.path.isfile(DBFILE) or os.path.getsize(DBFILE) == 0:
+    dbfile = app.config['DATABASE']
+    if not os.path.isfile(dbfile) or os.path.getsize(dbfile) == 0:
         db.init_db()
         db.create_tracks(tracks)
         return jsonify({'status': 0, 'msg': 'created db and tracks'})

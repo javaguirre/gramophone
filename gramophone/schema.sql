@@ -1,8 +1,10 @@
+-- Schema for gramophone metadata database.
+
 CREATE TABLE tracks (
-    path text,
-    title text,
-    track int,
-    duration int,
-    artist text,
-    album text
+    path TEXT,
+    title TEXT,
+    track INTEGER,
+    duration INTEGER,
+    artist TEXT,
+    album TEXT
 )
