@@ -28,6 +28,7 @@ app.utils = {
     },
 
     initPlayer: function() {
+        var self = this;
         var myPlaylist = new jPlayerPlaylist({
             jPlayer: "#jquery_jplayer_1",
             cssSelectorAncestor: "#jp_container_1"
@@ -37,9 +38,37 @@ app.utils = {
                 },
                 swfPath: "/static/scripts/vendor",
                 supplied: "oga, mp3",
-                solution: "flash, html"
+                solution: "flash, html",
+                ended: function() {
+                    self.scrobble();
+                },
+                play: function() {
+                    self.hidePlaylist(true);
+                }
         });
 
         return myPlaylist;
+    },
+
+    hidePlaylist: function(hide) {
+        var playlist_tracks = $('.jp-playlist ul').children();
+        var tracks_count = playlist_tracks.length;
+
+        if($('.jp-playlist').is(':visible')) {
+            $('#hide_playlist').text('Show ' + tracks_count + ' tracks in the playlist');
+        }
+        else {
+            $('#hide_playlist').html('<i class="icon-list-alt"></i> Hide Playlist');
+        }
+        if(hide) {
+            playlist_tracks.filter('.jp-playlist-current').show();
+            playlist_tracks.not('.jp-playlist-current').hide();
+        }
+        else {
+            playlist_tracks.not('.jp-playlist-current').slideToggle();
+        }
+    },
+
+    scrobble: function(track) {
     }
 };

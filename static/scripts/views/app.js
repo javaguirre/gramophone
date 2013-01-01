@@ -100,16 +100,8 @@ app.AppView = Backbone.View.extend({
         }
     },
 
-    hidePlaylist: function(ev) {
-        var tracks_count = $('.jp-playlist ul').children().length;
-
-        if($('.jp-playlist').is(':visible')) {
-            $(ev.target).text('Show ' + tracks_count + ' tracks in the playlist');
-        }
-        else {
-            $(ev.target).html('<i class="icon-list-alt"></i> Hide Playlist');
-        }
-        $('.jp-playlist').slideToggle();
+    hidePlaylist: function() {
+        app.utils.hidePlaylist();
     },
 
     clearPlaylist: function() {
