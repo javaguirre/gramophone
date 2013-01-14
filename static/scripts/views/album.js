@@ -7,7 +7,7 @@ app.AlbumView = Backbone.View.extend({
         'click .album-link': 'goToTracks'
     },
     tagName:  'div',
-    className: 'row-fluid',
+    className: 'row-fluid music-item',
     template: _.template($('#template-album').html()),
 
     initialize: function(options) {
@@ -20,7 +20,8 @@ app.AlbumView = Backbone.View.extend({
         return this;
     },
 
-    addToPlaylist: function() {
+    addToPlaylist: function(ev) {
+        ev.preventDefault();
         var tracks = new app.TrackList({query: "album=" + encodeURIComponent(this.model.get('album'))});
         tracks.fetch({
             success: function(data) {

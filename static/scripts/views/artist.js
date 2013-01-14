@@ -7,7 +7,7 @@ app.ArtistView = Backbone.View.extend({
         'click .add-artist-to-playlist': 'addToPlaylist'
     },
     tagName:  'div',
-    className: 'row-fluid',
+    className: 'row-fluid music-item',
     template: _.template($('#template-artist').html()),
 
     initialize: function(options) {},
@@ -20,7 +20,8 @@ app.ArtistView = Backbone.View.extend({
         return this;
     },
 
-    addToPlaylist: function() {
+    addToPlaylist: function(ev) {
+        ev.preventDefault();
         var tracks = new app.TrackList({query: "artist=" + encodeURIComponent(this.model.get('artist'))});
         tracks.fetch({
             success: function(data) {
@@ -29,11 +30,13 @@ app.ArtistView = Backbone.View.extend({
         });
     },
 
-    goToTracks: function() {
+    goToTracks: function(ev) {
+        ev.preventDefault();
         app.routerObj.navigate('!/filter/artist/' + encodeURIComponent(this.model.get('artist')), true);
     },
 
-    goToAlbums: function() {
+    goToAlbums: function(ev) {
+        ev.preventDefault();
         app.routerObj.navigate('!/filter_album/artist/' + encodeURIComponent(this.model.get('artist')), true);
     }
 });

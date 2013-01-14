@@ -36,6 +36,7 @@
         <script type="text/html" id="template-artist">
             {% include "artist.html" %}
         </script>
+        <!-- END Templates -->
     </head>
     <body id="app">
         <!--[if lt IE 7]>
@@ -45,10 +46,6 @@
         <div class="navbar">
             <!-- jPlayer -->
             {% include "player.html" %}
-
-            <button id="hide_playlist" class="btn btn-small"><i class="icon-list-alt"></i> Hide Playlist</button>
-            <button id="clear_playlist" class="btn btn-small"><i class="icon-remove"></i> Clear Playlist</button>
-            <button id="update_db" class="btn btn-small"><i class="icon-refresh"></i> Update Database</button>
             <!-- End jPlayer -->
         </div>
 
@@ -59,16 +56,19 @@
             </div>
 
             <div class="row-fluid">
-                <div class="span9 offset3">
-                    <ul>
-                        <li><a href="#!/">Tracks</a></li>
-                        <li><a href="#!/albums">Albums</a></li>
-                        <li><a href="#!/artists">Artists</a></li>
-                    </ul>
-                    <div class="">
-                        <input placeholder="Search" type="search" class="input-medium search-query" id="searchText">
-                        <button id="searchAction"><i class="icon-search"></i> Search</button>
+                <div class="span9">
+                    <div class="span4">
+                        <form class="form-search">
+                            <input placeholder="Search" type="search" class="input-medium search-query" id="searchText">
+                            <button id="searchAction"><i class="icon-search"></i> Search</button>
+                        </form>
                     </div>
+                    <div class="span1 menu-button"><a href="#!/"><i class="icon-music"></i></a></div>
+                    <div class="span1 menu-button"><a href="#!/albums"><i class="icon-headphones"></i></a></div>
+                    <div class="span1 menu-button"><a href="#!/artists"><i class="icon-user"></i></a></div>
+                    <div class="span1 menu-button"><a href="#" id="hide_playlist"><i class="icon-list-alt"></i></a></div>
+                    <div class="span1 menu-button"><a href="#" id="clear_playlist"><i class="icon-remove"></i></a></div>
+                    <div class="span1 menu-button"><a href="#" id="update_db"><i class="icon-refresh"></i></a></div>
                 </div>
             </div>
 

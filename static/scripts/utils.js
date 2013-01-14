@@ -55,10 +55,10 @@ app.utils = {
         var tracks_count = playlist_tracks.length;
 
         if($('.jp-playlist').is(':visible')) {
-            $('#hide_playlist').text('Show ' + tracks_count + ' tracks in the playlist');
+            $('#hide_playlist').html(tracks_count + ' <i class="icon-list-alt"></i>');
         }
         else {
-            $('#hide_playlist').html('<i class="icon-list-alt"></i> Hide Playlist');
+            $('#hide_playlist').html('<i class="icon-list-alt"></i>');
         }
         if(hide) {
             playlist_tracks.filter('.jp-playlist-current').show();

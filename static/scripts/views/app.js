@@ -100,20 +100,23 @@ app.AppView = Backbone.View.extend({
         }
     },
 
-    hidePlaylist: function() {
+    hidePlaylist: function(ev) {
+        ev.preventDefault();
         app.utils.hidePlaylist();
     },
 
-    clearPlaylist: function() {
+    clearPlaylist: function(ev) {
+        ev.preventDefault();
         app.playerObj.remove();
     },
 
-    goBack: function() {
+    goBack: function(ev) {
+        ev.preventDefault();
         window.history.back();
     },
 
     updateDb: function(ev) {
-        $(ev.target).attr('disabled', 'disabled');
+        ev.preventDefault();
         $.get('/update_db', function(data) {
             $('#message-content').text('Db updated successfully!');
             $('#messages').addClass('alert-success').show();

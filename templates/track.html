@@ -1,15 +1,16 @@
 <div class="span4">
     <span>
-        <strong>
-            <%= track.track %>.- <%= track.title || track.path %>
-        </strong>
+        <%= track.track %>.-
+        <a href="" class="add-track-to-playlist">
+            <%= track.title || track.path %>
+        </a>
     </span>
 </div>
 
-<div class="span2">
-    <button class=" btn btn-small add-track-to-playlist" href=""><i class="icon-plus"></i> Add</button>
+<div class="span6">
+    <small><a href="" class="filter-by-album"><%= track.album %></a> by <a href="" class="filter-by-artist"><%= track.artist %></a></small>
 </div>
 
-<div class="span6">
-    <small><span><%= track.time %></span> - <span><%= track.album %></span> by <span><%= track.artist %></span></small>
+<div class="span2">
+    <span><%= track.time %></span> <a class="add-track-to-playlist" href=""><i class="icon-plus"></i></a>
 </div>
