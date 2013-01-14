@@ -70,5 +70,10 @@ app.utils = {
     },
 
     scrobble: function(track) {
+    },
+
+    selectedMenu: function(title) {
+        $('.menu-button').removeClass('selected');
+        $('.menu-button[data-name="' + title + '"]').addClass('selected');
     }
 };

@@ -1,6 +1,11 @@
 body {
     padding-bottom: 40px;
     color: #666; font-family: sans-serif; line-height: 1.4;
+    background-color: #ebe1c5;
+}
+
+a {
+    color: #005580;
 }
 
 .music-item {
@@ -10,6 +15,11 @@ body {
 }
 
 .menu-button {
+    padding-top: 3px;
     background-color: #fff;
     text-align: center;
+}
+
+.menu-button.selected {
+    border-bottom: 2px solid #000;
 }
