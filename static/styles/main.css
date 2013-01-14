@@ -2,6 +2,7 @@ body {
     padding-bottom: 40px;
     color: #666; font-family: sans-serif; line-height: 1.4;
     background-color: #ebe1c5;
+    font-family: 'Dosis', sans-serif;
 }
 
 a {
@@ -22,4 +23,12 @@ a {
 
 .menu-button.selected {
     border-bottom: 2px solid #000;
+}
+
+#track-list {
+    font-size: 1.15em;
+}
+
+small {
+    font-weight: 90%;
 }
