@@ -203,10 +203,10 @@ a.jp-previous:hover {
 }
 
 a.jp-next {
-	background-position: 0 -141px;
+	background-position: 0 -135px;
 }
 a.jp-next:hover {
-	background-position: -29px -141px;
+	background-position: -29px -135px;
 }
 
 /* @end */
@@ -274,8 +274,8 @@ a.jp-mute,
 a.jp-unmute,
 a.jp-volume-max {
 	position: absolute;
-	width:18px;
-	height:15px;
+	width:25px;
+	height:25px;
 }
 
 div.jp-audio div.jp-type-single a.jp-mute,
@@ -318,33 +318,35 @@ div.jp-video a.jp-unmute {
 
 div.jp-video a.jp-volume-max {
 	left: 130px;
+    padding-left: 3px;
 }
 
 a.jp-mute {
 	background-position: 0 -170px;
+    width: 19px;
 }
 a.jp-mute:hover {
 	background-position: -19px -170px;
 }
 a.jp-unmute {
-	background-position: -39px -170px;
+	background-position: -75px -170px;
 	display: none;
 }
 a.jp-unmute:hover {
-	background-position: -60px -170px;
+	background-position: -45px -170px;
 }
 a.jp-volume-max {
-	background-position: 0 -186px;
+	background-position: -102px -170px;
 }
 a.jp-volume-max:hover {
-	background-position: -19px -186px;
+	background-position: -132px -170px;
 }
 
 div.jp-volume-bar {
 	position: absolute;
 	overflow:hidden;
 	background-repeat: repeat-x;
-	background-position: 0 -250px;
+	background-position: 0 -249px;
 	width:45px;
 	height:5px;
 	cursor: pointer;
@@ -369,7 +371,7 @@ div.jp-video div.jp-volume-bar {
 }
 div.jp-volume-bar-value {
 	background-repeat: repeat-x;
-	background-position: 0 -256px;
+	background-position: 0 -255px;
 	width:0px;
 	height:5px;
 	border-radius: 5px;
